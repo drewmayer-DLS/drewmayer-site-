@@ -146,6 +146,9 @@ html,body{overflow-x:clip}
 .stack-sec{isolation:isolate}
 .stack-sec::before{content:"";position:absolute;top:0;bottom:0;left:-100vmax;right:-100vmax;background:inherit;z-index:-1;pointer-events:none}
 .stack-sec.stack-over::before{box-shadow:0 -16px 32px rgba(22,24,29,0.10)}
+html.stack-snap{scroll-snap-type:y proximity}
+.stack-stop{height:0;scroll-snap-align:end;scroll-snap-stop:normal}
+.stack-start{height:0;scroll-snap-align:start}
 </style>
 <script>
 (function () {
@@ -168,7 +171,41 @@ html,body{overflow-x:clip}
     var hh = header ? header.offsetHeight : 0;
     secs.forEach(function (el) { el.style.top = Math.min(hh, window.innerHeight - el.offsetHeight) + 'px'; });
   }
+  // Pause points: a zero-height marker at the end of each section. With proximity snapping,
+  // scrolling that ends near a section's bottom settles there for a beat before the next slides over.
+  secs.forEach(function (el) { var m = document.createElement('div'); m.className = 'stack-stop'; m.setAttribute('aria-hidden', 'true'); el.after(m); });
+  var hhNow = header ? header.offsetHeight : 0;
+  secs.forEach(function (el) { if (!el.id) return; var m = document.createElement('div'); m.className = 'stack-start'; m.setAttribute('aria-hidden', 'true'); m.style.scrollMarginTop = hhNow + 'px'; el.before(m); });
+  window.addEventListener('resize', function () { var h = header ? header.offsetHeight : 0; document.querySelectorAll('.stack-start').forEach(function (m) { m.style.scrollMarginTop = h + 'px'; }); });
+  document.documentElement.classList.add('stack-snap');
+  // Anchor links: land exactly under the header, using each section's in-flow position.
+  function naturalTop(target) {
+    var child = target; while (child && child.parentElement !== wrap) child = child.parentElement;
+    if (!child) return target.getBoundingClientRect().top + window.scrollY;
+    var y = wrap.getBoundingClientRect().top + window.scrollY;
+    for (var n = wrap.firstElementChild; n && n !== child; n = n.nextElementSibling) y += n.offsetHeight;
+    return y + (target === child ? 0 : target.getBoundingClientRect().top - child.getBoundingClientRect().top);
+  }
+  function goTo(id, smooth) {
+    var t = document.getElementById(id); if (!t) return false;
+    var hh = header ? header.offsetHeight : 0;
+    var y = (secs[0] && (t === secs[0] || secs[0].contains(t))) ? 0 : Math.max(0, naturalTop(t) - hh);
+    var root = document.documentElement; root.classList.remove('stack-snap');
+    clearTimeout(goTo.t);
+    var done = function () { clearTimeout(goTo.t); goTo.t = setTimeout(function () { root.classList.add('stack-snap'); }, 150); };
+    if ('onscrollend' in window) window.addEventListener('scrollend', done, { once: true });
+    goTo.t = setTimeout(function () { root.classList.add('stack-snap'); }, 1500);
+    window.scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' });
+    if (!smooth) done();
+    return true;
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+    var id = a.getAttribute('href').slice(1); if (!id) return;
+    if (goTo(id, true)) { e.preventDefault(); history.replaceState(null, '', '#' + id); }
+  });
   layout();
+  if (location.hash) { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; var jump = function () { goTo(location.hash.slice(1), false); }; window.addEventListener('load', function () { jump(); setTimeout(jump, 300); }); }
   window.addEventListener('resize', layout);
   window.addEventListener('load', layout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);

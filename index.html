@@ -10,6 +10,7 @@
 <style>
 body{margin:0;background:#F6F6F3}
 [id]{scroll-margin-top:84px}
+.fs-head-mob{display:none}@media (max-width: 1099px){.fs-head-mob{display:flex}.fs-head-desk{display:none !important}}
 @media (max-width: 520px){.logo-name{display:none}.site-nav{gap:8px 16px !important;font-size:14px !important}}
 a{color:#1A44C8}a:hover{color:#10308F}
 </style>
@@ -124,7 +125,11 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </section>
 
 <section id="featured-story" aria-label="Featured story" style="background: #0F2233; color: #F2F5F8">
-<div style="max-width: 1200px; margin: 0 auto; padding: 88px 24px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center">
+<div style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 8vw, 88px) 24px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center">
+<div class="fs-head-mob" style="flex: 1 1 100%; flex-direction: column; gap: 14px; margin-bottom: -24px">
+<p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #8FC1E3">Featured story · The Weather Channel</p>
+<h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px, 4vw, 48px); font-weight: 600; line-height: 1.08; letter-spacing: -0.01em">Never the Same Every Year</h2>
+</div>
 <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
 <img src="images/twc-aerial.jpg" alt="Aerial view of coastal flooding around a row of beach houses in Scituate, Massachusetts, March 4, 2018. Photo: Karl Swenson/SKYWARN Spotter" style="display: block; width: 100%; height: auto; aspect-ratio: 1081 / 743; object-fit: cover; border-radius: 16px">
 <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
@@ -133,8 +138,10 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </div>
 <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+<div class="fs-head-desk" style="display: flex; flex-direction: column; gap: 18px">
 <p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #8FC1E3">Featured story · The Weather Channel</p>
 <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px, 4vw, 48px); font-weight: 600; line-height: 1.08; letter-spacing: -0.01em">Never the Same Every Year</h2>
+</div>
 <p style="margin: 0; font-size: 17px; line-height: 1.7; color: #D3DCE4">A deep dive into Scituate, Massachusetts, a town battered by nor'easters, and how rising seas and stronger storms are changing life for longtime residents.</p>
 <blockquote style="margin: 8px 0; padding: 4px 0 4px 24px; border-left: 3px solid #8FC1E3">
 <p style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 500; line-height: 1.35; color: #FFFFFF">“Every year we pull up the stairs and give it a kiss and say ‘I hope you’re here in the spring.’”</p>
@@ -226,6 +233,9 @@ html,body{overflow-x:clip}
 .stack-sec{isolation:isolate}
 .stack-sec::before{content:"";position:absolute;top:0;bottom:0;left:-100vmax;right:-100vmax;background:inherit;z-index:-1;pointer-events:none}
 .stack-sec.stack-over::before{box-shadow:0 -16px 32px rgba(22,24,29,0.10)}
+html.stack-snap{scroll-snap-type:y proximity}
+.stack-stop{height:0;scroll-snap-align:end;scroll-snap-stop:normal}
+.stack-start{height:0;scroll-snap-align:start}
 </style>
 <script>
 (function () {
@@ -248,7 +258,41 @@ html,body{overflow-x:clip}
     var hh = header ? header.offsetHeight : 0;
     secs.forEach(function (el) { el.style.top = Math.min(hh, window.innerHeight - el.offsetHeight) + 'px'; });
   }
+  // Pause points: a zero-height marker at the end of each section. With proximity snapping,
+  // scrolling that ends near a section's bottom settles there for a beat before the next slides over.
+  secs.forEach(function (el) { var m = document.createElement('div'); m.className = 'stack-stop'; m.setAttribute('aria-hidden', 'true'); el.after(m); });
+  var hhNow = header ? header.offsetHeight : 0;
+  secs.forEach(function (el) { if (!el.id) return; var m = document.createElement('div'); m.className = 'stack-start'; m.setAttribute('aria-hidden', 'true'); m.style.scrollMarginTop = hhNow + 'px'; el.before(m); });
+  window.addEventListener('resize', function () { var h = header ? header.offsetHeight : 0; document.querySelectorAll('.stack-start').forEach(function (m) { m.style.scrollMarginTop = h + 'px'; }); });
+  document.documentElement.classList.add('stack-snap');
+  // Anchor links: land exactly under the header, using each section's in-flow position.
+  function naturalTop(target) {
+    var child = target; while (child && child.parentElement !== wrap) child = child.parentElement;
+    if (!child) return target.getBoundingClientRect().top + window.scrollY;
+    var y = wrap.getBoundingClientRect().top + window.scrollY;
+    for (var n = wrap.firstElementChild; n && n !== child; n = n.nextElementSibling) y += n.offsetHeight;
+    return y + (target === child ? 0 : target.getBoundingClientRect().top - child.getBoundingClientRect().top);
+  }
+  function goTo(id, smooth) {
+    var t = document.getElementById(id); if (!t) return false;
+    var hh = header ? header.offsetHeight : 0;
+    var y = (secs[0] && (t === secs[0] || secs[0].contains(t))) ? 0 : Math.max(0, naturalTop(t) - hh);
+    var root = document.documentElement; root.classList.remove('stack-snap');
+    clearTimeout(goTo.t);
+    var done = function () { clearTimeout(goTo.t); goTo.t = setTimeout(function () { root.classList.add('stack-snap'); }, 150); };
+    if ('onscrollend' in window) window.addEventListener('scrollend', done, { once: true });
+    goTo.t = setTimeout(function () { root.classList.add('stack-snap'); }, 1500);
+    window.scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' });
+    if (!smooth) done();
+    return true;
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+    var id = a.getAttribute('href').slice(1); if (!id) return;
+    if (goTo(id, true)) { e.preventDefault(); history.replaceState(null, '', '#' + id); }
+  });
   layout();
+  if (location.hash) { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; var jump = function () { goTo(location.hash.slice(1), false); }; window.addEventListener('load', function () { jump(); setTimeout(jump, 300); }); }
   window.addEventListener('resize', layout);
   window.addEventListener('load', layout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
