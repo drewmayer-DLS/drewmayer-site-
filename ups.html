@@ -201,6 +201,22 @@ html,body{overflow-x:clip}
 
 })();
 </script>
+<script>
+(function () {
+  document.querySelectorAll('.lc-carousel').forEach(function (c) {
+    var t = c.querySelector('.lc-track'); if (!t) return;
+    function step() { var f = t.querySelector('figure'); return f ? f.offsetWidth + 24 : t.clientWidth * 0.8; }
+    function update() {
+      c.classList.toggle('scrolled', t.scrollLeft > 8);
+      c.classList.toggle('at-end', t.scrollLeft + t.clientWidth >= t.scrollWidth - 8);
+    }
+    var r = c.querySelector('.lc-arrow-r'), l = c.querySelector('.lc-arrow-l');
+    if (r) r.addEventListener('click', function () { t.scrollBy({ left: step(), behavior: 'smooth' }); });
+    if (l) l.addEventListener('click', function () { t.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    t.addEventListener('scroll', update, { passive: true }); window.addEventListener('resize', update); update();
+  });
+})();
+</script>
 
 </body>
 </html>

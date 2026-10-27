@@ -10,6 +10,18 @@
 <style>
 body{margin:0;background:#F6F6F3}
 [id]{scroll-margin-top:84px}
+.lc-track{scrollbar-width:none}.lc-track::-webkit-scrollbar{display:none}
+.lc-fade{position:absolute;top:0;bottom:0;width:96px;pointer-events:none;transition:opacity .25s}
+.lc-fade-r{right:0;background:linear-gradient(90deg,rgba(232,240,245,0),#E8F0F5 85%)}
+.lc-fade-l{left:0;background:linear-gradient(270deg,rgba(232,240,245,0),#E8F0F5 85%);opacity:0}
+.lc-arrow{position:absolute;top:calc(50% - 40px);width:48px;height:48px;border-radius:999px;border:0;background:#16181D;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(22,24,29,.25);transition:opacity .25s,transform .2s}
+.lc-arrow:hover{transform:scale(1.06)}
+.lc-arrow-r{right:16px;animation:lcNudge 1.8s ease-in-out 3}
+.lc-arrow-l{left:16px;opacity:0;pointer-events:none}
+.lc-carousel.at-end .lc-fade-r,.lc-carousel.at-end .lc-arrow-r{opacity:0;pointer-events:none}
+.lc-carousel.scrolled .lc-fade-l,.lc-carousel.scrolled .lc-arrow-l{opacity:1;pointer-events:auto}
+@keyframes lcNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@media (prefers-reduced-motion: reduce){.lc-arrow-r{animation:none}}
 .fs-head-mob{display:none}@media (max-width: 1099px){.fs-head-mob{display:flex}.fs-head-desk{display:none !important}}
 @media (max-width: 520px){.logo-name{display:none}.site-nav{gap:8px 16px !important;font-size:14px !important}}
 a{color:#1A44C8}a:hover{color:#10308F}
@@ -161,14 +173,19 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </div>
 
-<div role="region" aria-label="Line Change screens, scroll sideways for more" tabindex="0" style="margin: 36px -24px 0; padding: 12px 24px 28px; display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 24px">
+<div class="lc-carousel" style="position: relative; margin: 36px -24px 0">
+<div role="region" aria-label="Line Change screens, scroll sideways for more" tabindex="0" class="lc-track" style="padding: 12px 24px 28px; display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 24px">
 <figure style="margin: 0; flex: 0 0 auto; width: 232px; scroll-snap-align: start"><img src="images/lc-summary.jpg" alt="Game summary with time on ice, estimated distance and a heart-rate chart with shifts shaded" style="display: block; width: 232px; height: 504px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px; box-shadow: 0 16px 36px rgba(14, 40, 60, 0.24); box-sizing: border-box"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #3A3F48"><strong style="color: #16181D">Game summary.</strong> Shifts detected from heart rate alone.</figcaption></figure>
 <figure style="margin: 0; flex: 0 0 auto; width: 232px; scroll-snap-align: start"><img src="images/lc-performance.jpg" alt="Effort and load scores compared with the player's usual, with a likely-why explanation" style="display: block; width: 232px; height: 504px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px; box-shadow: 0 16px 36px rgba(14, 40, 60, 0.24); box-sizing: border-box"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #3A3F48"><strong style="color: #16181D">Effort vs. your usual.</strong> Every score explains its likely why.</figcaption></figure>
 <figure style="margin: 0; flex: 0 0 auto; width: 232px; scroll-snap-align: start"><img src="images/lc-metrics.jpg" alt="Shift-by-shift chart where bar height is shift length and color is peak heart rate" style="display: block; width: 232px; height: 504px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px; box-shadow: 0 16px 36px rgba(14, 40, 60, 0.24); box-sizing: border-box"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #3A3F48"><strong style="color: #16181D">Shift by shift.</strong> Height is length, color is intensity.</figcaption></figure>
 <figure style="margin: 0; flex: 0 0 auto; width: 232px; scroll-snap-align: start"><img src="images/lc-readiness.jpg" alt="Effort over the last ten games with this game highlighted, and a readiness meter reading Ready" style="display: block; width: 232px; height: 504px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px; box-shadow: 0 16px 36px rgba(14, 40, 60, 0.24); box-sizing: border-box"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #3A3F48"><strong style="color: #16181D">Readiness.</strong> Framed kindly: a light night, not a bad one.</figcaption></figure>
 <figure style="margin: 0; flex: 0 0 auto; width: 232px; scroll-snap-align: start"><img src="images/lc-zones.jpg" alt="Early versus late game recovery and time in each heart-rate zone" style="display: block; width: 232px; height: 504px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px; box-shadow: 0 16px 36px rgba(14, 40, 60, 0.24); box-sizing: border-box"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #3A3F48"><strong style="color: #16181D">Early vs. late.</strong> Did recovery hold up in the third period?</figcaption></figure>
 </div>
-<p style="margin: 0; font-size: 13px; color: #4A4F5A">Scroll sideways for more screens →</p>
+<div class="lc-fade lc-fade-r" aria-hidden="true"></div>
+<div class="lc-fade lc-fade-l" aria-hidden="true"></div>
+<button type="button" class="lc-arrow lc-arrow-r" aria-label="Next screens"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+<button type="button" class="lc-arrow lc-arrow-l" aria-label="Previous screens"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+</div>
 </div>
 </section>
 
@@ -307,6 +324,22 @@ html,body{overflow-x:clip}
   window.addEventListener('load', layout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
+})();
+</script>
+<script>
+(function () {
+  document.querySelectorAll('.lc-carousel').forEach(function (c) {
+    var t = c.querySelector('.lc-track'); if (!t) return;
+    function step() { var f = t.querySelector('figure'); return f ? f.offsetWidth + 24 : t.clientWidth * 0.8; }
+    function update() {
+      c.classList.toggle('scrolled', t.scrollLeft > 8);
+      c.classList.toggle('at-end', t.scrollLeft + t.clientWidth >= t.scrollWidth - 8);
+    }
+    var r = c.querySelector('.lc-arrow-r'), l = c.querySelector('.lc-arrow-l');
+    if (r) r.addEventListener('click', function () { t.scrollBy({ left: step(), behavior: 'smooth' }); });
+    if (l) l.addEventListener('click', function () { t.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    t.addEventListener('scroll', update, { passive: true }); window.addEventListener('resize', update); update();
+  });
 })();
 </script>
 
