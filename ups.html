@@ -13,7 +13,7 @@ body{margin:0;background:#F6F6F3}
 @media (max-width: 520px){.logo-name{display:none}.site-nav{gap:8px 16px !important;font-size:14px !important}}
 a{color:#1A44C8}a:hover{color:#10308F}
 </style>
-<style>img{max-width:100%} html{scroll-behavior:smooth}</style>
+<style>img{max-width:100%}</style>
 </head>
 <body>
 <div style="font-family: Inter, system-ui, sans-serif; color: #16181D; background: #F6F6F3; min-height: 100vh">
@@ -122,9 +122,11 @@ html,body{overflow-x:clip}
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var wrap = document.querySelector('body > div');
   if (!wrap) return;
+  var root = document.documentElement;
   var header = wrap.querySelector(':scope > header');
   var secs = Array.prototype.filter.call(wrap.children, function (el) { return el.tagName === 'SECTION' || el.tagName === 'FOOTER'; });
   function hh() { return header ? header.offsetHeight : 0; }
+  function maxY() { return root.scrollHeight - window.innerHeight; }
   function naturalTop(target) {
     var child = target; while (child && child.parentElement !== wrap) child = child.parentElement;
     if (!child) return target.getBoundingClientRect().top + window.scrollY;
@@ -132,38 +134,50 @@ html,body{overflow-x:clip}
     for (var n = wrap.firstElementChild; n && n !== child; n = n.nextElementSibling) y += n.offsetHeight;
     return y + (target === child ? 0 : target.getBoundingClientRect().top - child.getBoundingClientRect().top);
   }
+  function setY(y) { window.scrollTo({ top: Math.round(y), left: 0, behavior: 'instant' in document.body.style ? 'instant' : 'auto' }); }
 
-  // Programmatic scrolling (links + snapping) — ignores its own scroll events.
-  var busy = false, busyTimer, lastRest = window.scrollY;
-  function scrollToY(y, smooth) {
-    y = Math.max(0, Math.min(y, document.documentElement.scrollHeight - window.innerHeight));
-    busy = true; clearTimeout(busyTimer);
-    window.scrollTo({ top: y, behavior: smooth && !reduce ? 'smooth' : 'auto' });
-    var finish = function () { busy = false; lastRest = window.scrollY; };
-    var dist = Math.abs(window.scrollY - y);
-    busyTimer = setTimeout(finish, smooth && !reduce ? Math.min(1400, 350 + dist * 0.4) : 60);
+  // ---- controlled animation (always ends on the exact target) ----
+  var animating = false, raf = 0, lockUntil = 0, lastY = window.scrollY, restY = window.scrollY, restTimer;
+  function animateTo(getTarget, ms, done) {
+    cancelAnimationFrame(raf);
+    var from = window.scrollY, target = Math.max(0, Math.min(getTarget(), maxY()));
+    if (reduce || ms <= 0 || Math.abs(target - from) < 2) { setY(target); finish(); return; }
+    animating = true; var t0 = performance.now();
+    function step(now) {
+      var p = Math.min(1, (now - t0) / ms), e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      setY(from + (target - from) * e);
+      if (p < 1) raf = requestAnimationFrame(step); else finish();
+    }
+    raf = requestAnimationFrame(step);
+    function finish() {
+      setY(Math.max(0, Math.min(getTarget(), maxY()))); // re-measure: lands exactly even if layout shifted
+      animating = false; lastY = restY = window.scrollY; lockUntil = performance.now() + 350;
+      if (done) done();
+    }
   }
 
-  // Links: land exactly under the header; the monogram / #top goes to the very top.
-  function goTo(id, smooth) {
-    var t = document.getElementById(id); if (!t) return false;
-    var first = secs[0] && (t === secs[0] || secs[0].contains(t));
-    scrollToY(first ? 0 : naturalTop(t) - hh(), smooth);
-    return true;
+  // ---- links: exact landing under the header; monogram / #top → very top ----
+  function targetFor(id) {
+    var t = document.getElementById(id); if (!t) return null;
+    if (secs[0] && (t === secs[0] || secs[0].contains(t))) return function () { return 0; };
+    return function () { return naturalTop(t) - hh(); };
   }
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
     var id = a.getAttribute('href').slice(1);
-    if (!id) { e.preventDefault(); scrollToY(0, true); return; }
-    if (goTo(id, true)) { e.preventDefault(); history.replaceState(null, '', id === 'top' ? location.pathname : '#' + id); }
+    var get = id ? targetFor(id) : function () { return 0; }; if (!get) return;
+    e.preventDefault();
+    var dist = Math.abs(get() - window.scrollY);
+    animateTo(get, Math.min(1100, 450 + dist * 0.12));
+    history.replaceState(null, '', (!id || id === 'top') ? location.pathname : '#' + id);
   });
   if (location.hash) {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    var jump = function () { goTo(location.hash.slice(1), false); };
+    var jump = function () { var g = targetFor(location.hash.slice(1)); if (g) animateTo(g, 0); };
     window.addEventListener('load', function () { jump(); setTimeout(jump, 300); });
   }
 
-  if (reduce) return; // reduced motion: plain scrolling, no stacking or snapping
+  if (reduce) return; // reduced motion: plain scrolling, no stacking or stepping
 
   secs.forEach(function (el, i) {
     el.classList.add('stack-sec');
@@ -175,9 +189,7 @@ html,body{overflow-x:clip}
   });
   if (header) header.style.zIndex = '100';
 
-  // Transition zones between sections A and B:
-  //   pause = A fully shown (its bottom at the screen bottom, or A at the top if it's short)
-  //   arrive = B snapped under the header
+  // ---- transition zones: pause = section A fully shown, arrive = section B under the header ----
   var zones = [];
   function layout() {
     var h = hh(), vh = window.innerHeight;
@@ -185,7 +197,7 @@ html,body{overflow-x:clip}
     zones = [];
     for (var i = 0; i < secs.length - 1; i++) {
       var aTop = naturalTop(secs[i]), bTop = naturalTop(secs[i + 1]);
-      var pause = Math.max(aTop - h, bTop - vh), arrive = bTop - h;
+      var pause = Math.max(aTop - h, bTop - vh), arrive = Math.min(bTop - h, maxY());
       if (arrive - pause > 4) zones.push({ pause: pause, arrive: arrive });
     }
   }
@@ -194,27 +206,107 @@ html,body{overflow-x:clip}
   window.addEventListener('load', layout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
-  function settle() {
-    if (busy) return;
-    var y = window.scrollY, down = y >= lastRest;
+  var E = 1.5;
+  function zoneFrom(y, dir) {          // zone a move in direction dir would transition through
     for (var i = 0; i < zones.length; i++) {
       var z = zones[i];
-      if (y > z.pause + 2 && y < z.arrive - 2) {
-        var target;
-        if (down) target = lastRest < z.pause - 2 ? z.pause : z.arrive; // first pause, then snap the next section in
-        else target = lastRest > z.arrive + 2 ? z.arrive : z.pause;     // going up: show the next section's top, then the full previous one
-        scrollToY(target, true);
-        return;
+      if (dir > 0 && Math.abs(y - z.pause) <= E) return z;   // only step from a resting stop
+      if (dir < 0 && Math.abs(y - z.arrive) <= E) return z;
+    }
+    return null;
+  }
+  function nextStop(y, dir) {          // nearest boundary ahead within a free (in-section) stretch
+    var best = null;
+    zones.forEach(function (z) {
+      if (dir > 0 && z.pause > y + E && (best === null || z.pause < best)) best = z.pause;
+      if (dir < 0 && z.arrive < y - E && (best === null || z.arrive > best)) best = z.arrive;
+    });
+    return best;
+  }
+  var TRANS = 620, STOP = 220;
+  // Returns true if the move was taken over (caller should cancel native scrolling).
+  function handleMove(dir, amount) {
+    var y = window.scrollY;
+    // Overshot into a gap (native scrolling outran us): go back to the stop it passed, and hold.
+    for (var i = 0; i < zones.length; i++) {
+      var g = zones[i];
+      if (y > g.pause + E && y < g.arrive - E) {
+        var restedPause = Math.abs(restY - g.pause) <= E, restedArrive = Math.abs(restY - g.arrive) <= E;
+        var back = dir > 0 ? (restedPause ? g.arrive : g.pause) : (restedArrive ? g.pause : g.arrive); // a real step only from the stop it was resting on
+        animateTo(function () { return back; }, back === (dir > 0 ? g.arrive : g.pause) ? TRANS : STOP);
+        return true;
       }
     }
-    lastRest = y;
+    var z = zoneFrom(y, dir);
+    if (z && Math.abs(restY - (dir > 0 ? z.pause : z.arrive)) > E) { lockUntil = performance.now() + 180; return true; } // just reached this stop mid-gesture: hold
+    if (z) { var t = dir > 0 ? z.arrive : z.pause; animateTo(function () { return t; }, TRANS); return true; }
+    var stop = nextStop(y, dir);
+    if (stop !== null && (dir > 0 ? y + amount > stop : y - amount < stop)) { animateTo(function () { return stop; }, STOP); return true; }
+    return false;
   }
-  var idle, touching = false;
-  window.addEventListener('touchstart', function () { touching = true; clearTimeout(idle); }, { passive: true });
-  window.addEventListener('touchend', function () { touching = false; clearTimeout(idle); idle = setTimeout(settle, 220); }, { passive: true });
-  var _settle = settle; settle = function () { if (!touching) _settle(); };
-  if ('onscrollend' in window) window.addEventListener('scrollend', function () { clearTimeout(idle); idle = setTimeout(settle, 40); });
-  else window.addEventListener('scroll', function () { clearTimeout(idle); idle = setTimeout(settle, 160); }, { passive: true });
+
+  function innerScrolls(node, dir) { // an inner scroll box (e.g. the 23/5 page preview) that can still move this way
+    for (var el = node; el && el !== document.body && el.nodeType === 1; el = el.parentElement) {
+      var oy = getComputedStyle(el).overflowY;
+      if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 1) {
+        if (dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0) return true;
+      }
+    }
+    return false;
+  }
+  // Wheel / trackpad
+  window.addEventListener('wheel', function (e) {
+    if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+    var now = performance.now();
+    if (animating) { e.preventDefault(); return; }
+    if (now < lockUntil) { e.preventDefault(); lockUntil = now + 180; return; } // swallow trackpad inertia after a stop
+    var dir = e.deltaY > 0 ? 1 : -1;
+    if (innerScrolls(e.target, dir)) return;
+    var amt = Math.abs(e.deltaY) * (e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? window.innerHeight : 1);
+    if (handleMove(dir, amt)) e.preventDefault();
+  }, { passive: false });
+
+  // Touch
+  var touchY0 = 0, touching = false, consumed = false;
+  var touchTarget = null;
+  window.addEventListener('touchstart', function (e) { touching = true; consumed = false; touchY0 = e.touches[0].clientY; touchTarget = e.target; }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (animating || consumed) { e.preventDefault(); return; }
+    var dy = touchY0 - e.touches[0].clientY;
+    if (Math.abs(dy) < 6) return;
+    if (innerScrolls(touchTarget, dy > 0 ? 1 : -1)) return;
+    if (performance.now() < lockUntil) { e.preventDefault(); return; }
+    if (handleMove(dy > 0 ? 1 : -1, Math.abs(dy))) { consumed = true; e.preventDefault(); }
+  }, { passive: false });
+  window.addEventListener('touchend', function () { touching = false; }, { passive: true });
+
+  // Safety net for anything else (keyboard, momentum, scrollbar): never rest inside a zone.
+  window.addEventListener('scroll', function () {
+    if (animating) return;
+    var y = window.scrollY, dir = y > lastY ? 1 : y < lastY ? -1 : 0;
+    if (!dir) return;
+    for (var i = 0; i < zones.length; i++) {
+      var z = zones[i];
+      var inside = y > z.pause + E && y < z.arrive - E;
+      if (!inside) continue;
+      var fromPause = Math.abs(lastY - z.pause) <= E + 1, fromArrive = Math.abs(lastY - z.arrive) <= E + 1;
+      var wasOutside = lastY < z.pause - E || lastY > z.arrive + E;
+      var locked = performance.now() < lockUntil;
+      if ((touching && consumed) || (locked && (fromPause || fromArrive))) { // leftover momentum right after a stop: hold still
+        setY(fromArrive ? z.arrive : z.pause); lockUntil = performance.now() + 180; break; }
+      if (wasOutside) {                       // carried in by momentum/keys: stop at the boundary it came from
+        setY(dir > 0 ? z.pause : z.arrive); lockUntil = performance.now() + 350; if (touching) consumed = true;
+      } else if ((dir > 0 && Math.abs(restY - z.pause) <= E) || (dir < 0 && Math.abs(restY - z.arrive) <= E)) {
+        var t = dir > 0 ? z.arrive : z.pause; animateTo(function () { return t; }, TRANS); // was resting on the stop: keys/scrollbar step
+      } else {
+        setY(dir > 0 ? z.pause : z.arrive); lockUntil = performance.now() + 350;        // momentum ran past the stop: hold there
+        if (touching) consumed = true;
+      }
+      break;
+    }
+    lastY = window.scrollY;
+    clearTimeout(restTimer); restTimer = setTimeout(function () { if (!animating) restY = window.scrollY; }, 140);
+  }, { passive: true });
 })();
 </script>
 
