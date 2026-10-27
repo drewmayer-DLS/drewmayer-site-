@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;background:#F6F6F3}
+[id]{scroll-margin-top:84px}
+@media (max-width: 520px){.logo-name{display:none}.site-nav{gap:8px 16px !important;font-size:14px !important}}
 a{color:#1A44C8}a:hover{color:#10308F}
 </style>
 <style>img{max-width:100%} html{scroll-behavior:smooth}</style>
@@ -16,13 +18,15 @@ a{color:#1A44C8}a:hover{color:#10308F}
 <body>
 <div style="font-family: Inter, system-ui, sans-serif; color: #16181D; background: #F6F6F3; min-height: 100vh">
 
-<header style="max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
-<a href="index.html" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: #16181D; text-decoration: none">Drew Mayer</a>
+<header style="position: sticky; top: 0; z-index: 10; background: #FFFFFF; border-bottom: 1px solid #E2E3DE; box-shadow: 0 2px 12px rgba(22, 24, 29, 0.06)">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; justify-content: space-between">
+<a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 19px; color: #16181D; text-decoration: none"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: #16181D; color: #FFFFFF; font-size: 14px; letter-spacing: 0.02em">DM</span><span class="logo-name">Drew Mayer</span></a>
 <a href="index.html" style="font-size: 15px; font-weight: 500; color: #16181D; text-decoration: none">← All Work</a>
+</div>
 </header>
 
 <section style="background: #E8F0F5; border-top: 1px solid #D3DEE6; border-bottom: 1px solid #D3DEE6">
-<div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+<div style="max-width: 1200px; margin: 0 auto; padding: 48px 24px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
 <div style="flex: 1 1 440px; min-width: 0">
 <p style="margin: 0 0 18px; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #0E5A7A">Passion project · Designed and built · iPhone, Apple Watch &amp; web</p>
 <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(36px, 5vw, 60px); line-height: 1.06; letter-spacing: -0.02em">Line Change: Turning Heart Rate Into Hockey Stats</h1>
@@ -38,7 +42,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </section>
 
 <section aria-label="Project snapshot" style="max-width: 1200px; margin: 0 auto; padding: 48px 24px">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; border-bottom: 1px solid #DADBD6; padding-bottom: 32px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 24px; border-bottom: 1px solid #DADBD6; padding-bottom: 32px">
 <div><p style="margin: 0 0 6px; font-size: 13px; font-weight: 600; color: #5A5F69; text-transform: uppercase; letter-spacing: 0.06em">Role</p><p style="margin: 0; font-size: 16px; line-height: 1.5">Sole designer and developer</p></div>
 <div><p style="margin: 0 0 6px; font-size: 13px; font-weight: 600; color: #5A5F69; text-transform: uppercase; letter-spacing: 0.06em">Platforms</p><p style="margin: 0; font-size: 16px; line-height: 1.5">iPhone, Apple Watch, web</p></div>
 <div><p style="margin: 0 0 6px; font-size: 13px; font-weight: 600; color: #5A5F69; text-transform: uppercase; letter-spacing: 0.06em">Data sources</p><p style="margin: 0; font-size: 16px; line-height: 1.5">Polar H10 and Verity, Polar watches, Apple Health</p></div>
@@ -46,7 +50,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </section>
 
-<section style="max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px">
+<section style="max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 48px">
 <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600">The Problem</h2>
 <div>
 <p style="margin: 0 0 16px; font-size: 18px; line-height: 1.7; color: #3A3F48">Fitness apps treat a hockey game as one long workout. An average heart rate over 75 minutes hides what matters: how many shifts you took, how hard you went on each, and whether you faded late.</p>
@@ -58,7 +62,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 <div style="max-width: 1200px; margin: 0 auto; padding: 80px 24px">
 <h2 style="margin: 0 0 12px; font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600">How It Works</h2>
 <p style="margin: 0 0 40px; max-width: 680px; font-size: 17px; line-height: 1.7; color: #C3C6CC">Every screen is built on four steps, each one shown to the player rather than hidden.</p>
-<ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px">
 <li style="border: 1px solid #3A3E47; border-radius: 16px; padding: 24px"><p style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: #9DB4F5">01 · Capture</p><h3 style="margin: 10px 0 8px; font-size: 19px; font-weight: 600">Heart Rate</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #C3C6CC">From a chest strap, watch or Apple Health.</p></li>
 <li style="border: 1px solid #3A3E47; border-radius: 16px; padding: 24px"><p style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: #9DB4F5">02 · Detect</p><h3 style="margin: 10px 0 8px; font-size: 19px; font-weight: 600">Shifts</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #C3C6CC">Inferred from heart-rate rises and recoveries, with warm-up separated out.</p></li>
 <li style="border: 1px solid #3A3E47; border-radius: 16px; padding: 24px"><p style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: #9DB4F5">03 · Estimate</p><h3 style="margin: 10px 0 8px; font-size: 19px; font-weight: 600">Hockey Metrics</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #C3C6CC">Time on ice, distance, strides, effort and load.</p></li>
@@ -109,8 +113,8 @@ a{color:#1A44C8}a:hover{color:#10308F}
 <h2 style="margin: 0 0 12px; font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600">Small Details, Kind Framing</h2>
 <p style="margin: 0 0 40px; max-width: 720px; font-size: 17px; line-height: 1.7; color: #3A3F48">A low score isn't a failure. A red effort ring means "a light night, not a bad one," and the readiness bar ends on "Ready," not on a grade.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: center">
-<figure style="margin: 0; width: 240px"><img src="images/lc-readiness.jpg" alt="Effort over the last ten games with this game highlighted, and a readiness meter reading Ready" style="display: block; width: 240px; height: 522px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #4A4F5A">Recent games and readiness</figcaption></figure>
-<figure style="margin: 0; width: 240px"><img src="images/lc-zones.jpg" alt="Early versus late game recovery comparison and time in each heart-rate zone" style="display: block; width: 240px; height: 522px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #4A4F5A">Early vs. late game, and heart-rate zones</figcaption></figure>
+<figure style="margin: 0; width: 240px"><img src="images/lc-readiness.jpg" alt="Effort over the last ten games with this game highlighted, and a readiness meter reading Ready" style="display: block; box-sizing: border-box; width: 240px; height: 522px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #4A4F5A">Recent games and readiness</figcaption></figure>
+<figure style="margin: 0; width: 240px"><img src="images/lc-zones.jpg" alt="Early versus late game recovery comparison and time in each heart-rate zone" style="display: block; box-sizing: border-box; width: 240px; height: 522px; object-fit: cover; object-position: top; border: 6px solid #16181D; border-radius: 38px"><figcaption style="margin-top: 14px; font-size: 14px; line-height: 1.5; color: #4A4F5A">Early vs. late game, and heart-rate zones</figcaption></figure>
 </div>
 <ul style="margin: 48px auto 0; max-width: 760px; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; font-size: 16px; line-height: 1.6; color: #3A3F48">
 <li>Drop-in sessions are detected automatically and kept out of game averages.</li>
@@ -121,7 +125,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </section>
 
 <section aria-label="Reflection" style="max-width: 1200px; margin: 0 auto; padding: 80px 24px">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 48px">
 <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600">What I Learned</h2>
 <div>
 <p style="margin: 0; font-size: 18px; line-height: 1.7; color: #3A3F48">Building it myself meant every design decision met real data right away. But the biggest changes came from testing with my teammates. Their feedback reshaped the entire dashboard’s look and feel, how settings are configured, and which numbers show up first.</p>

@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0;background:#F6F6F3}
+[id]{scroll-margin-top:84px}
+@media (max-width: 520px){.logo-name{display:none}.site-nav{gap:8px 16px !important;font-size:14px !important}}
 a{color:#1A44C8}a:hover{color:#10308F}
 </style>
 <style>img{max-width:100%} html{scroll-behavior:smooth}</style>
@@ -16,17 +18,19 @@ a{color:#1A44C8}a:hover{color:#10308F}
 <body>
 <div style="font-family: Inter, system-ui, sans-serif; color: #16181D; background: #F6F6F3; min-height: 100vh">
 
-<header style="max-width: 1200px; margin: 0 auto; padding: 24px 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
-<a href="#top" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: #16181D; text-decoration: none">Drew Mayer</a>
-<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 15px; font-weight: 500">
+<header style="position: sticky; top: 0; z-index: 10; background: #FFFFFF; border-bottom: 1px solid #E2E3DE; box-shadow: 0 2px 12px rgba(22, 24, 29, 0.06)">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; justify-content: space-between">
+<a href="#top" style="display: inline-flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 19px; color: #16181D; text-decoration: none"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: #16181D; color: #FFFFFF; font-size: 14px; letter-spacing: 0.02em">DM</span><span class="logo-name">Drew Mayer</span></a>
+<nav class="site-nav" aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; font-size: 15px; font-weight: 500">
 <a href="#work" style="color: #16181D; text-decoration: none">Work</a>
 <a href="#about" style="color: #16181D; text-decoration: none">About</a>
 <a href="Drew_Mayer_Resume.pdf" style="color: #16181D; text-decoration: none">Resume</a>
-<a href="#contact" style="color: #16181D; text-decoration: none">Contact</a>
+<a href="#contact" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border-radius: 999px; background: #16181D; color: #FFFFFF; text-decoration: none">Contact</a>
 </nav>
+</div>
 </header>
 
-<section id="top" style="max-width: 1200px; margin: 0 auto; padding: 72px 24px 56px">
+<section id="top" style="max-width: 1200px; margin: 0 auto; padding: 44px 24px 56px">
 <p style="margin: 0 0 20px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #1A44C8">Product Designer · Atlanta</p>
 <h1 style="margin: 0; max-width: 900px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(40px, 6vw, 76px); line-height: 1.04; letter-spacing: -0.02em">I Make Complex Products Simple to Use</h1>
 <p style="margin: 28px 0 0; max-width: 640px; font-size: 19px; line-height: 1.6; color: #4A4F5A">10+ years designing information architecture, flows and interfaces for Nasdaq, UPS and The Weather Channel. A journalist by training, so I start with what people need to understand, then design the path to it.</p>
@@ -37,7 +41,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </section>
 
 <section aria-label="Impact" style="max-width: 1200px; margin: 0 auto; padding: 0 24px 80px">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #DADBD6; border: 1px solid #DADBD6; border-radius: 16px; overflow: hidden">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 1px; background: #DADBD6; border: 1px solid #DADBD6; border-radius: 16px; overflow: hidden">
 <div style="background: #FFFFFF; padding: 28px">
 <p style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 600">40% → 92%</p>
 <p style="margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: #4A4F5A">Forrester UX score, UPS.com redesign across 220+ sites</p>
@@ -63,9 +67,9 @@ a{color:#1A44C8}a:hover{color:#10308F}
 <p style="margin: 0; font-size: 15px; color: #4A4F5A">Five case studies · process, decisions and results</p>
 </div>
 
-<a href="nasdaq.html" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 0; background: #FFFFFF; border: 1px solid #DADBD6; border-radius: 20px; overflow: hidden; color: #16181D; text-decoration: none; margin-bottom: 24px">
-<div style="background: #E6ECFB; min-height: 340px; display: flex">
-<img src="images/nasdaq-card.jpg" alt="Redesigned Nasdaq.com homepage and 23/5 Trading hub" style="display: block; width: 100%; min-height: 340px; object-fit: cover">
+<a href="nasdaq.html" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 0; background: #FFFFFF; border: 1px solid #DADBD6; border-radius: 20px; overflow: hidden; color: #16181D; text-decoration: none; margin-bottom: 24px">
+<div style="background: #E6ECFB; display: flex; align-items: center">
+<img src="images/nasdaq-card.jpg" alt="Redesigned Nasdaq.com homepage and 23/5 Trading hub" style="display: block; width: 100%; height: auto; aspect-ratio: 1200 / 820">
 </div>
 <div style="padding: 40px; display: flex; flex-direction: column; gap: 16px; justify-content: center">
 <p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #1A44C8">Nasdaq · 2025–2026 · Featured</p>
@@ -80,9 +84,9 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </a>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 20px">
 <a href="ups.html" style="display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #DADBD6; border-radius: 20px; overflow: hidden; color: #16181D; text-decoration: none">
-<img src="images/ups-card.jpg" alt="Redesigned UPS.com homepage and tracking support page" style="display: block; width: 100%; height: 240px; object-fit: cover">
+<img src="images/ups-card.jpg" alt="Redesigned UPS.com homepage and tracking support page" style="display: block; width: 100%; height: auto; aspect-ratio: 1200 / 760; object-fit: cover">
 <div style="padding: 28px; display: flex; flex-direction: column; gap: 10px">
 <p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4A4F5A">UPS · 2019–2024</p>
 <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 600; line-height: 1.2">Redesigning UPS.com Across 220+ Global Sites</h3>
@@ -90,7 +94,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </a>
 <a href="ups.html#ups-store" style="display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #DADBD6; border-radius: 20px; overflow: hidden; color: #16181D; text-decoration: none">
-<img src="images/upsstore-card.jpg" alt="Before: the old standalone The UPS Store site. After: the new microsite inside UPS.com" style="display: block; width: 100%; height: 240px; object-fit: cover">
+<img src="images/upsstore-card.jpg" alt="Before: the old standalone The UPS Store site. After: the new microsite inside UPS.com" style="display: block; width: 100%; height: auto; aspect-ratio: 1200 / 760; object-fit: cover">
 <div style="padding: 28px; display: flex; flex-direction: column; gap: 10px">
 <p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4A4F5A">The UPS Store</p>
 <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 600; line-height: 1.2">One Brand, One Experience: 110 Pages to 8</h3>
@@ -98,7 +102,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </a>
 <a href="#work" style="display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #DADBD6; border-radius: 20px; overflow: hidden; color: #16181D; text-decoration: none">
-<img src="images/ice-card.jpg" alt="ICE Clear Credit page with the daily CDS clearing data table" style="display: block; width: 100%; height: 240px; object-fit: cover; object-position: top">
+<img src="images/ice-card.jpg" alt="ICE Clear Credit page with the daily CDS clearing data table" style="display: block; width: 100%; height: auto; aspect-ratio: 1200 / 760; object-fit: cover">
 <div style="padding: 28px; display: flex; flex-direction: column; gap: 10px">
 <p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4A4F5A">ICE · 2024–2025</p>
 <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 600; line-height: 1.2">High-Stakes Data, Every Single Day</h3>
@@ -106,7 +110,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </a>
 <a href="#featured-story" style="display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #DADBD6; border-radius: 20px; overflow: hidden; color: #16181D; text-decoration: none">
-<img src="images/twc-card.jpg" alt="Three weather.com stories by Drew MacFarlane: Hurricane Florence flooding, 2018 weather before-and-after GIFs, and the Great Pacific Garbage Patch" style="display: block; width: 100%; height: 240px; object-fit: cover">
+<img src="images/twc-card.jpg" alt="Three weather.com stories by Drew MacFarlane: Hurricane Florence flooding, 2018 weather before-and-after GIFs, and the Great Pacific Garbage Patch" style="display: block; width: 100%; height: auto; aspect-ratio: 1200 / 760; object-fit: cover">
 <div style="padding: 28px; display: flex; flex-direction: column; gap: 10px">
 <p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4A4F5A">The Weather Channel · 2015–2019</p>
 <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 600; line-height: 1.2">Covering What Weather Does to People</h3>
@@ -119,10 +123,10 @@ a{color:#1A44C8}a:hover{color:#10308F}
 <section id="featured-story" aria-label="Featured story" style="background: #0F2233; color: #F2F5F8">
 <div style="max-width: 1200px; margin: 0 auto; padding: 88px 24px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center">
 <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
-<img src="images/twc-aerial.jpg" alt="Aerial view of coastal flooding around a row of beach houses in Scituate, Massachusetts, March 4, 2018. Photo: Karl Swenson/SKYWARN Spotter" style="display: block; width: 100%; height: 340px; object-fit: cover; border-radius: 16px">
+<img src="images/twc-aerial.jpg" alt="Aerial view of coastal flooding around a row of beach houses in Scituate, Massachusetts, March 4, 2018. Photo: Karl Swenson/SKYWARN Spotter" style="display: block; width: 100%; height: auto; aspect-ratio: 1081 / 743; object-fit: cover; border-radius: 16px">
 <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
-<img src="images/twc-sign.jpg" alt="Inner Harbor Road sign and a Not a Thru sign half buried in sand" style="display: block; width: 100%; height: 170px; object-fit: cover; border-radius: 12px">
-<img src="images/twc-stilts.jpg" alt="Beach houses raised on stilts with the ocean running underneath" style="display: block; width: 100%; height: 170px; object-fit: cover; border-radius: 12px">
+<img src="images/twc-sign.jpg" alt="Inner Harbor Road sign and a Not a Thru sign half buried in sand" style="display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 12px">
+<img src="images/twc-stilts.jpg" alt="Beach houses raised on stilts with the ocean running underneath" style="display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 12px">
 </div>
 </div>
 <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
@@ -170,7 +174,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 <section aria-label="How I work" style="background: #16181D; color: #F6F6F3">
 <div style="max-width: 1200px; margin: 0 auto; padding: 88px 24px">
 <h2 style="margin: 0 0 40px; font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 600; letter-spacing: -0.01em">How I Work</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 32px">
 <div><p style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: #9DB4F5">01</p><h3 style="margin: 10px 0 8px; font-size: 20px; font-weight: 600">Find the Real Task</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #C3C6CC">Analytics, interviews and audits to learn what people come to do.</p></div>
 <div><p style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: #9DB4F5">02</p><h3 style="margin: 10px 0 8px; font-size: 20px; font-weight: 600">Structure It</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #C3C6CC">Sitemaps, flows and navigation that match how users think.</p></div>
 <div><p style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: #9DB4F5">03</p><h3 style="margin: 10px 0 8px; font-size: 20px; font-weight: 600">Prototype With Real Words</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #C3C6CC">Interaction and copy designed together, so reviews test the actual experience.</p></div>
@@ -179,7 +183,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </section>
 
-<section id="about" style="max-width: 1200px; margin: 0 auto; padding: 96px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px; align-items: center">
+<section id="about" style="max-width: 1200px; margin: 0 auto; padding: 96px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 48px; align-items: center">
 <img src="images/about-collage.jpg" alt="Drew on a rocky coastline, in a tuxedo, and snowboarding in front of the Matterhorn" style="display: block; width: 100%; height: auto; max-height: 520px; object-fit: cover; border-radius: 20px">
 <div>
 <h2 style="margin: 0 0 20px; font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 600; letter-spacing: -0.01em">About</h2>
@@ -191,7 +195,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 
 <section aria-label="Recognition" style="max-width: 1200px; margin: 0 auto; padding: 0 24px 96px">
 <h2 style="margin: 0 0 24px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4A4F5A">Recognition</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px">
 <div style="border-top: 2px solid #16181D; padding-top: 16px"><p style="margin: 0; font-weight: 600; font-size: 16px">Webby Award Honoree</p><p style="margin: 6px 0 0; font-size: 14px; color: #4A4F5A">2023 · Best User Experience, UPS.com</p></div>
 <div style="border-top: 2px solid #16181D; padding-top: 16px"><p style="margin: 0; font-weight: 600; font-size: 16px">Edward R. Murrow Award</p><p style="margin: 6px 0 0; font-size: 14px; color: #4A4F5A">2017 · Best Network TV News Website</p></div>
 <div style="border-top: 2px solid #16181D; padding-top: 16px"><p style="margin: 0; font-weight: 600; font-size: 16px">EPPY Award</p><p style="margin: 6px 0 0; font-size: 14px; color: #4A4F5A">2019 · Best News Feature</p></div>
