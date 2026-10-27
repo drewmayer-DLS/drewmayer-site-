@@ -250,7 +250,7 @@ html,body{overflow-x:clip}
   if (!wrap) return;
   var root = document.documentElement;
   var header = wrap.querySelector(':scope > header');
-  var secs = Array.prototype.filter.call(wrap.children, function (el) { return el.tagName === 'SECTION' || el.tagName === 'FOOTER'; });
+  var secs = Array.prototype.filter.call(wrap.children, function (el) { return el.tagName === 'SECTION' || el.tagName === 'FOOTER' || el.classList.contains('stack-group'); });
   function hh() { return header ? header.offsetHeight : 0; }
   function maxY() { return root.scrollHeight - window.innerHeight; }
   function naturalTop(target) {
