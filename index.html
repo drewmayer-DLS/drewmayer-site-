@@ -10,6 +10,7 @@
 <style>
 body{margin:0;background:#F6F6F3}
 [id]{scroll-margin-top:84px}
+@media (prefers-reduced-motion: reduce){.bg-video{display:none}}
 @media (max-width: 520px){.logo-name{display:none}.site-nav{gap:8px 16px !important;font-size:14px !important}}
 a{color:#1A44C8}a:hover{color:#10308F}
 </style>
@@ -120,8 +121,10 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 </section>
 
-<section id="featured-story" aria-label="Featured story" style="background: #0F2233; color: #F2F5F8">
-<div style="max-width: 1200px; margin: 0 auto; padding: 88px 24px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center">
+<section id="featured-story" aria-label="Featured story" style="position: relative; overflow: hidden; background: #0F2233; color: #F2F5F8">
+<video class="bg-video" autoplay="" muted="" loop="" playsinline="" preload="metadata" poster="images/scituate-bg-poster.jpg" aria-hidden="true" tabindex="-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.22; pointer-events: none"><source src="images/scituate-bg.mp4" type="video/mp4"></source></video>
+<div aria-hidden="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 34, 51, 0.55) 0%, rgba(15, 34, 51, 0.25) 50%, rgba(15, 34, 51, 0.7) 100%); pointer-events: none"></div>
+<div style="position: relative; max-width: 1200px; margin: 0 auto; padding: 88px 24px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center">
 <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
 <img src="images/twc-aerial.jpg" alt="Aerial view of coastal flooding around a row of beach houses in Scituate, Massachusetts, March 4, 2018. Photo: Karl Swenson/SKYWARN Spotter" style="display: block; width: 100%; height: auto; aspect-ratio: 1081 / 743; object-fit: cover; border-radius: 16px">
 <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
