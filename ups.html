@@ -131,6 +131,7 @@ a{color:#1A44C8}a:hover{color:#10308F}
 </div>
 <style>
 html,body{overflow-x:clip}
+@supports not (overflow-x: clip){body{overflow-x:hidden}}
 .stack-sec{isolation:isolate}
 .stack-sec::before{content:"";position:absolute;top:0;bottom:0;left:-100vmax;right:-100vmax;background:inherit;z-index:-1;pointer-events:none}
 .stack-sec.stack-over::before{box-shadow:0 -16px 32px rgba(22,24,29,0.10)}
